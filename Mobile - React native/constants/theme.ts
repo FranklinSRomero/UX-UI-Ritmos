@@ -8,28 +8,35 @@ import { Platform, StyleSheet } from 'react-native';
 // Paleta de colores unificada
 export const RitmosColors = {
   // Colores principales
-  primary: '#2f6370',        // Verde oscuro del logo y partes oscuras
-  placeholder: '#97b1b8',    // Color verdoso para placeholders
-  background: '#ffffff',     // Blanco puro para fondos
-  alarmCard: '#9ac6e3',      // Azul de las tarjetas de alarmas
-  
+  primary: '#225360', // Verde oscuro del logo y partes oscuras
+  placeholder: '#97b1b8', // Color verdoso para placeholders
+  background: '#ffffff', // Blanco puro para fondos
+  alarmCard: '#9ac6e3', // Azul de las tarjetas de alarmas
+  tabBarBackground: '#3F727C',
+  tabIconBase: '#E7DCC9',
+  tabIconAccent: '#3A7C86',
+  tabIconForeground: '#B88643',
+  tabIconForegroundInactive: 'rgba(184, 134, 67, 0.65)',
+  tabIconBaseInactive: 'rgba(231, 220, 201, 0.75)',
+  tabIconAccentInactive: 'rgba(58, 124, 134, 0.35)',
+
   // Colores de sistema
   text: {
     primary: '#2f6370',
     secondary: '#97b1b8',
     onBackground: '#333333',
-    onSurface: '#666666',
+    onSurface: '#000000ff',
     disabled: '#999999',
   },
-  
+
   // Estados
   success: '#4CAF50',
   error: '#F44336',
   warning: '#FF9800',
-  
+
   // Superficies
   surface: '#ffffff',
-  surfaceVariant: '#f5f5f5',
+  surfaceVariant: '#dae3e9',
   outline: '#E0E0E0',
 };
 
@@ -44,11 +51,11 @@ export const RitmosTypography = {
     }),
     secondary: Platform.select({
       ios: 'Inter',
-      android: 'Inter', 
+      android: 'Inter',
       default: 'Inter',
     }),
   },
-  
+
   // Escalas tipográficas
   scale: {
     // Headers
@@ -67,7 +74,7 @@ export const RitmosTypography = {
       fontWeight: '600' as const,
       lineHeight: 22,
     },
-    
+
     // Body texts
     bodyLarge: {
       fontSize: 16,
@@ -84,7 +91,7 @@ export const RitmosTypography = {
       fontWeight: '400' as const,
       lineHeight: 16,
     },
-    
+
     // Labels
     labelLarge: {
       fontSize: 16,
@@ -129,7 +136,6 @@ export const RitmosElevation = {
   },
 };
 
-// Espaciado consistente
 export const RitmosSpacing = {
   xs: 4,
   sm: 8,
@@ -168,11 +174,11 @@ export const RitmosComponents = StyleSheet.create({
     color: RitmosColors.text.onBackground,
     ...RitmosElevation.level1,
   },
-  
+
   inputPlaceholder: {
     color: RitmosColors.placeholder,
   },
-  
+
   // Botones primarios
   primaryButton: {
     height: 50,
@@ -182,14 +188,14 @@ export const RitmosComponents = StyleSheet.create({
     justifyContent: 'center' as const,
     ...RitmosElevation.level2,
   },
-  
+
   primaryButtonText: {
     fontSize: RitmosTypography.scale.labelLarge.fontSize,
     fontWeight: RitmosTypography.scale.labelLarge.fontWeight,
     fontFamily: RitmosTypography.fonts.primary,
     color: RitmosColors.surface,
   },
-  
+
   // Botones secundarios
   secondaryButton: {
     height: 50,
@@ -199,14 +205,14 @@ export const RitmosComponents = StyleSheet.create({
     justifyContent: 'center' as const,
     ...RitmosElevation.level1,
   },
-  
+
   secondaryButtonText: {
     fontSize: RitmosTypography.scale.labelLarge.fontSize,
     fontWeight: RitmosTypography.scale.labelLarge.fontWeight,
     fontFamily: RitmosTypography.fonts.primary,
     color: RitmosColors.text.onSurface,
   },
-  
+
   // Headers consistentes
   screenHeader: {
     backgroundColor: RitmosColors.primary,
@@ -216,15 +222,15 @@ export const RitmosComponents = StyleSheet.create({
     alignItems: 'center' as const,
     justifyContent: 'space-between' as const,
   },
-  
+
   screenHeaderText: {
     color: RitmosColors.surface,
     fontSize: RitmosTypography.scale.headerLarge.fontSize,
     fontWeight: RitmosTypography.scale.headerLarge.fontWeight,
     fontFamily: RitmosTypography.fonts.secondary,
-    flex: 1,
+    flex: 0,
   },
-  
+
   // Tarjetas
   card: {
     backgroundColor: RitmosColors.surface,
@@ -232,14 +238,14 @@ export const RitmosComponents = StyleSheet.create({
     padding: RitmosSpacing.md,
     ...RitmosElevation.level1,
   },
-  
+
   alarmCard: {
     backgroundColor: RitmosColors.alarmCard,
     borderRadius: RitmosBorder.radius.lg,
     padding: RitmosSpacing.md,
     ...RitmosElevation.level1,
   },
-  
+
   // Texto consistente
   headingLarge: {
     fontSize: RitmosTypography.scale.headerLarge.fontSize,
@@ -248,7 +254,7 @@ export const RitmosComponents = StyleSheet.create({
     color: RitmosColors.text.primary,
     lineHeight: RitmosTypography.scale.headerLarge.lineHeight,
   },
-  
+
   headingMedium: {
     fontSize: RitmosTypography.scale.headerMedium.fontSize,
     fontWeight: RitmosTypography.scale.headerMedium.fontWeight,
@@ -256,7 +262,7 @@ export const RitmosComponents = StyleSheet.create({
     color: RitmosColors.text.onBackground,
     lineHeight: RitmosTypography.scale.headerMedium.lineHeight,
   },
-  
+
   bodyText: {
     fontSize: RitmosTypography.scale.bodyLarge.fontSize,
     fontWeight: RitmosTypography.scale.bodyLarge.fontWeight,
@@ -264,7 +270,7 @@ export const RitmosComponents = StyleSheet.create({
     color: RitmosColors.text.onSurface,
     lineHeight: RitmosTypography.scale.bodyLarge.lineHeight,
   },
-  
+
   placeholderText: {
     fontSize: RitmosTypography.scale.bodyLarge.fontSize,
     fontFamily: RitmosTypography.fonts.secondary,
@@ -309,6 +315,6 @@ export const Fonts = Platform.select({
     sans: `${RitmosTypography.fonts.primary}, system-ui, -apple-system, sans-serif`,
     serif: "Georgia, 'Times New Roman', serif",
     rounded: "'SF Pro Rounded', sans-serif",
-    mono: "monospace",
+    mono: 'monospace',
   },
 });

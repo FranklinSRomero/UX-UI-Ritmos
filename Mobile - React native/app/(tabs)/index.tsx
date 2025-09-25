@@ -1,10 +1,10 @@
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/layout/screen';
+import { ScreenHeader } from '@/components/layout/screen-header';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { RitmosColors, RitmosComponents, RitmosElevation, RitmosSpacing } from '@/constants/theme';
 import { router } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface AlarmCard {
   id: string;
@@ -81,35 +81,17 @@ export default function AlarmsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Lista de alarmas</Text>
-        </View>
+    <Screen>
+      <ScreenHeader title="Lista de alarmas" />
 
-        {/* Content */}
-        <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.grid}>
-            {alarms.map(renderAlarmCard)}
-          </View>
-        </ScrollView>
-      </ThemedView>
-    </SafeAreaView>
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.grid}>{alarms.map(renderAlarmCard)}</View>
+      </ScrollView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: RitmosColors.background,
-  },
-  header: {
-    ...RitmosComponents.screenHeader,
-  },
-  headerText: {
-    ...RitmosComponents.screenHeaderText,
-  },
   content: {
     flex: 1,
   },

@@ -1,12 +1,13 @@
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/layout/screen';
+import { ScreenHeader } from '@/components/layout/screen-header';
 import { EmailInput } from '@/components/ui/email-input';
 import { PasswordInput } from '@/components/ui/password-input';
-import { RitmosColors, RitmosComponents, RitmosSpacing, RitmosTypography } from '@/constants/theme';
+import { RitmosComponents, RitmosSpacing, RitmosTypography } from '@/constants/theme';
+import { isValidEmail } from '@/utils/validation';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Logo } from './logo';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Logo } from '../assets/icons/logo';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -14,10 +15,8 @@ export default function LoginScreen() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  // Referencias para navegación entre campos
+  const passwordInputRef = useRef<TextInput>(null);
 
   const handleLogin = () => {
     // Limpiar errores previos
@@ -29,7 +28,7 @@ export default function LoginScreen() {
     if (!email.trim()) {
       setEmailError('Por favor ingresa tu correo electrónico');
       hasErrors = true;
-    } else if (!validateEmail(email)) {
+    } else if (!isValidEmail(email)) {
       setEmailError('Por favor ingresa un correo válido');
       hasErrors = true;
     }
@@ -51,38 +50,38 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Inicio de sesión</Text>
-        </View>
+    <Screen>
+      <ScreenHeader title="Inicio de sesión" />
 
-        {/* Logo */}
+      <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Logo />
         </View>
 
-        {/* Form */}
         <View style={styles.formContainer}>
           <EmailInput
             placeholder="Correo"
             value={email}
             onChangeText={(text) => {
               setEmail(text);
-              if (emailError) setEmailError(''); // Limpiar error al escribir
+              if (emailError) setEmailError('');
             }}
             error={emailError}
+            returnKeyType="next"
+            onSubmitEditing={() => passwordInputRef.current?.focus()}
           />
 
           <PasswordInput
+            ref={passwordInputRef}
             placeholder="Contraseña"
             value={password}
             onChangeText={(text) => {
               setPassword(text);
-              if (passwordError) setPasswordError(''); // Limpiar error al escribir
+              if (passwordError) setPasswordError('');
             }}
             error={passwordError}
+            returnKeyType="done"
+            onSubmitEditing={handleLogin}
           />
 
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -93,65 +92,27 @@ export default function LoginScreen() {
             <Text style={styles.signupText}>Aún no tienes cuenta?</Text>
           </TouchableOpacity>
         </View>
-      </ThemedView>
-    </SafeAreaView>
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
-    backgroundColor: RitmosColors.background,
-  },
-  header: {
-    ...RitmosComponents.screenHeader,
-  },
-  headerText: {
-    ...RitmosComponents.screenHeaderText,
+    paddingHorizontal: RitmosSpacing.lg + RitmosSpacing.md,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   logoContainer: {
     alignItems: 'center',
     marginTop: RitmosSpacing.xxl + RitmosSpacing.xxl,
     marginBottom: RitmosSpacing.xxl + RitmosSpacing.lg,
   },
-  logoIconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: RitmosSpacing.sm + 2,
-  },
-  logoIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: RitmosColors.primary,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  logoIconLeaf: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    width: 24,
-    height: 24,
-    backgroundColor: '#8b4513',
-    borderRadius: 12,
-    transform: [{ rotate: '45deg' }],
-  },
-  logoText: {
-    ...RitmosComponents.headingLarge,
-    fontSize: 48,
-    fontWeight: '700',
-  },
   formContainer: {
-    paddingHorizontal: RitmosSpacing.lg + RitmosSpacing.md,
-    alignItems: 'center',
-    gap: 30,
-
-  },
-  input: {
-    ...RitmosComponents.input,
     width: '100%',
-    marginBottom: RitmosSpacing.md - RitmosSpacing.xs,
+    maxWidth: 360,
+    alignItems: 'center',
   },
   loginButton: {
     ...RitmosComponents.primaryButton,

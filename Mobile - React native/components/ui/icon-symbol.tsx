@@ -1,30 +1,64 @@
-// Fallback for using MaterialIcons on Android and web.
+import React, { ComponentType } from 'react';
+import { OpaqueColorValue, StyleProp, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  ArrowRightOnRectangleIcon,
+  ArrowUpOnSquareIcon,
+  BellIcon,
+  CheckCircleIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CodeBracketIcon,
+  Cog6ToothIcon,
+  EnvelopeIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  LinkIcon,
+  LockClosedIcon,
+  MapIcon,
+  MicrophoneIcon,
+  PaperAirplaneIcon,
+  PauseCircleIcon,
+  PencilSquareIcon,
+  PhotoIcon,
+  PlayCircleIcon,
+  QuestionMarkCircleIcon,
+  TrashIcon,
+  UserMinusIcon,
+  XMarkIcon,
+} from 'react-native-heroicons/outline';
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+const ICON_COMPONENTS = {
+  'bell.fill': BellIcon,
+  'chevron.left': ChevronLeftIcon,
+  'chevron.left.forwardslash.chevron.right': CodeBracketIcon,
+  'chevron.right': ChevronRightIcon,
+  eye: EyeIcon,
+  'eye.slash': EyeSlashIcon,
+  'gearshape.fill': Cog6ToothIcon,
+  'house.fill': HomeIcon,
+  'info.circle': InformationCircleIcon,
+  link: LinkIcon,
+  'location.fill': MapIcon,
+  microphone: MicrophoneIcon,
+  lock: LockClosedIcon,
+  'paperplane.fill': PaperAirplaneIcon,
+  'pause.fill': PauseCircleIcon,
+  pencil: PencilSquareIcon,
+  photo: PhotoIcon,
+  'person.fill.xmark': UserMinusIcon,
+  'play.fill': PlayCircleIcon,
+  'rectangle.portrait.and.arrow.right': ArrowRightOnRectangleIcon,
+  'check.circle': CheckCircleIcon,
+  'square.and.arrow.up': ArrowUpOnSquareIcon,
+  trash: TrashIcon,
+  xmark: XMarkIcon,
+  envelope: EnvelopeIcon,
+} as const satisfies Record<string, ComponentType<{ color?: string; size?: number }>>;
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+export type IconSymbolName = keyof typeof ICON_COMPONENTS;
 
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
-const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as IconMapping;
-
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
 export function IconSymbol({
   name,
   size = 24,
@@ -35,7 +69,26 @@ export function IconSymbol({
   size?: number;
   color: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  const IconComponent = ICON_COMPONENTS[name] ?? QuestionMarkCircleIcon;
+  const resolvedColor = typeof color === 'string' ? color : undefined;
+
+  return (
+    <View
+      style={[
+        {
+          width: size,
+          height: size,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        style as StyleProp<ViewStyle>,
+      ]}
+    >
+      <IconComponent size={size} color={resolvedColor} />
+    </View>
+  );
 }
+
+
+

@@ -6,26 +6,37 @@ interface WebMapProps {
   latitude?: number;
   longitude?: number;
   zoom?: number;
-  markers?: Array<{
+  markers?: {
     lat: number;
     lng: number;
     title: string;
     color?: string;
-  }>;
+  }[];
+  borderRadius?: number;
+  style?: any;
 }
 
 export function WebMap({
   latitude = 4.6097,
   longitude = -74.0817,
   zoom = 12,
-  markers = []
+  markers = [],
+  borderRadius = 0,
+  style
 }: WebMapProps) {
 
-  const markersJS = markers.map(marker => `
-    L.marker([${marker.lat}, ${marker.lng}])
+  const markersJS = markers.map((marker, index) => `
+    // Crear icono personalizado con color
+    var customIcon${index} = L.divIcon({
+      className: 'custom-marker',
+      html: '<div style="background-color: ${marker.color || '#2f6370'}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+      iconSize: [26, 26],
+      iconAnchor: [13, 13]
+    });
+    
+    L.marker([${marker.lat}, ${marker.lng}], {icon: customIcon${index}})
       .addTo(map)
-      .bindPopup('${marker.title}')
-      .openPopup();
+      .bindPopup('${marker.title}');
   `).join('\n');
 
   const htmlContent = `
@@ -41,10 +52,17 @@ export function WebMap({
           margin: 0; 
           padding: 0; 
           font-family: Arial, sans-serif; 
+          overflow: hidden;
         }
         #map { 
           width: 100vw; 
           height: 100vh; 
+          border-radius: ${borderRadius}px;
+          overflow: hidden;
+        }
+        .custom-marker {
+          background: transparent !important;
+          border: none !important;
         }
       </style>
     </head>
@@ -76,8 +94,17 @@ export function WebMap({
     </html>
   `;
 
+  const containerStyle = [
+    styles.container,
+    {
+      borderRadius: borderRadius,
+      overflow: 'hidden'
+    },
+    style
+  ];
+
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <WebView
         source={{ html: htmlContent }}
         style={styles.webview}

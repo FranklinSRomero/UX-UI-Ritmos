@@ -1,10 +1,21 @@
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/layout/screen';
+import { ScreenHeader } from '@/components/layout/screen-header';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { WebMap } from '@/components/ui/web-map';
 import { RitmosColors, RitmosComponents, RitmosElevation, RitmosSpacing, RitmosTypography } from '@/constants/theme';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Modal, ScrollView, Share, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+
+interface LocationMarker {
+  id: string;
+  title: string;
+  color: 'red' | 'green' | 'blue';
+  latitude: number;
+  longitude: number;
+  description?: string;
+}
 
 export default function DetalleAlarmaScreen() {
   const [isActive, setIsActive] = useState(true);
@@ -40,9 +51,9 @@ export default function DetalleAlarmaScreen() {
           onPress: () => {
             console.log('Navegar a editar alarma');
             // TODO: Implementar navegación a pantalla de edición
-          }
-        }
-      ]
+          },
+        },
+      ],
     );
   };
 
@@ -59,9 +70,9 @@ export default function DetalleAlarmaScreen() {
             console.log('Eliminando alarma...');
             Alert.alert('Alarma eliminada', 'La alarma ha sido eliminada exitosamente');
             router.back();
-          }
-        }
-      ]
+          },
+        },
+      ],
     );
   };
 
@@ -77,7 +88,7 @@ export default function DetalleAlarmaScreen() {
     try {
       const result = await Share.share({
         message: `¡Mira mi alarma de Ritmos! 📍\n\n${alarmaData.titulo}\n${shareNotes ? alarmaData.descripcion + '\n\n' : ''}Ubicación: ${alarmaData.ubicacion}\n\n🔗 https://ritmos.app/alarma/${alarmaData.id}`,
-        title: 'Compartir Alarma'
+        title: 'Compartir Alarma',
       });
 
       if (result.action === Share.sharedAction) {
@@ -89,159 +100,141 @@ export default function DetalleAlarmaScreen() {
       Alert.alert('Error', 'No se pudo compartir el enlace');
     }
   };
+  const markers: LocationMarker[] = [
+    {
+      id: '1',
+      title: 'Centro comercial',
+      color: 'red',
+      latitude: 4.6097,
+      longitude: -74.0817,
+      description: 'Centro Comercial Principal'
+    }
+  ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <IconSymbol size={24} name="chevron.left" color={RitmosColors.surface} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Detalle Alarma</Text>
-          <View style={styles.backButton} />
+    <Screen>
+      <ScreenHeader title="Detalle Alarma" onBackPress={handleBackPress} />
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Título y Toggle */}
+        <View style={styles.titleSection}>
+          <Text style={styles.alarmTitle}>{alarmaData.titulo}</Text>
+          <Switch
+            value={isActive}
+            onValueChange={handleToggleActive}
+            trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
+            thumbColor={isActive ? RitmosColors.surface : RitmosColors.surfaceVariant}
+            ios_backgroundColor={RitmosColors.outline}
+            style={styles.toggleSwitch}
+          />
         </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          {/* Título y Toggle */}
-          <View style={styles.titleSection}>
-            <Text style={styles.alarmTitle}>{alarmaData.titulo}</Text>
-            <Switch
-              value={isActive}
-              onValueChange={handleToggleActive}
-              trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
-              thumbColor={isActive ? RitmosColors.surface : RitmosColors.surfaceVariant}
-              ios_backgroundColor={RitmosColors.outline}
-              style={styles.toggleSwitch}
+        {/* Descripción */}
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionText}>{alarmaData.descripcion}</Text>
+        </View>
+
+        {/* Sección de Ubicación */}
+        <View style={styles.locationSection}>
+          <Text style={styles.sectionTitle}>Ubicación</Text>
+
+          {/* Mini Mapa */}
+          <View style={styles.mapContainer}>
+            <WebMap
+              latitude={4.6097}
+              longitude={-74.0817}
+              zoom={1}
+              borderRadius={RitmosSpacing.md}
+              markers={markers.map(marker => ({
+                lat: marker.latitude,
+                lng: marker.longitude,
+                title: marker.title,
+                color: RitmosColors.error
+              }))}
             />
           </View>
 
-          {/* Descripción */}
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionText}>{alarmaData.descripcion}</Text>
-          </View>
+          {/* Botones de Acción */}
+          <View style={styles.actionButtonsRow}>
+            <TouchableOpacity style={styles.actionButton} onPress={handleEditar}>
+              <IconSymbol size={16} name="pencil" color={RitmosColors.text.onSurface} />
+              <Text style={styles.actionButtonText}>Editar</Text>
+            </TouchableOpacity>
 
-          {/* Sección de Ubicación */}
-          <View style={styles.locationSection}>
-            <Text style={styles.sectionTitle}>Ubicación</Text>
-
-            {/* Mini Mapa */}
-            <View style={styles.miniMapContainer}>
-              <View style={styles.miniMap}>
-                {/* Simular mapa con patrón */}
-                <View style={styles.mapPattern}>
-                  {/* Marcador en el centro */}
-                  <View style={styles.mapMarker}>
-                    <View style={styles.markerDot} />
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            {/* Botones de Acción */}
-            <View style={styles.actionButtonsRow}>
-              <TouchableOpacity style={styles.actionButton} onPress={handleEditar}>
-                <IconSymbol size={16} name="pencil" color={RitmosColors.text.onSurface} />
-                <Text style={styles.actionButtonText}>Editar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles.actionButton, styles.deleteButton]} onPress={handleEliminar}>
-                <IconSymbol size={16} name="trash" color={RitmosColors.error} />
-                <Text style={styles.actionButtonText}>Eliminar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Botón Compartir */}
-          <View style={styles.shareSection}>
-            <TouchableOpacity style={styles.shareButton} onPress={handleCompartir}>
-              <IconSymbol size={20} name="square.and.arrow.up" color={RitmosColors.text.onSurface} />
-              <Text style={styles.shareButtonText}>Compartir</Text>
+            <TouchableOpacity style={[styles.actionButton, styles.deleteButton]} onPress={handleEliminar}>
+              <IconSymbol size={16} name="trash" color={RitmosColors.error} />
+              <Text style={styles.actionButtonText}>Eliminar</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        </View>
 
-        {/* Modal de Compartir */}
-        <Modal
-          visible={showShareModal}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={handleCloseModal}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              {/* Header del Modal */}
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>{alarmaData.titulo}</Text>
-                <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
-                  <IconSymbol size={24} name="xmark" color={RitmosColors.text.onSurface} />
-                </TouchableOpacity>
-              </View>
+        {/* Botón Compartir */}
+        <View style={styles.shareSection}>
+          <TouchableOpacity style={styles.shareButton} onPress={handleCompartir}>
+            <IconSymbol size={20} name="square.and.arrow.up" color={RitmosColors.text.onSurface} />
+            <Text style={styles.shareButtonText}>Compartir</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
 
-              {/* Código QR */}
-              <View style={styles.qrContainer}>
-                <View style={styles.qrCode}>
-                  {/* Simulación de código QR con patrón de cuadrados */}
-                  <View style={styles.qrPattern}>
-                    {Array.from({ length: 15 }, (_, row) =>
-                      Array.from({ length: 15 }, (_, col) => (
-                        <View
-                          key={`${row}-${col}`}
-                          style={[
-                            styles.qrPixel,
-                            {
-                              backgroundColor: (row + col) % 3 === 0 ? '#000' : '#fff',
-                            },
-                          ]}
-                        />
-                      ))
-                    )}
-                  </View>
-                </View>
-              </View>
-
-              {/* Toggle Compartir Notas */}
-              <View style={styles.shareToggleContainer}>
-                <Text style={styles.shareToggleLabel}>Compartir las Notas</Text>
-                <Switch
-                  value={shareNotes}
-                  onValueChange={setShareNotes}
-                  trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
-                  thumbColor={shareNotes ? RitmosColors.surface : RitmosColors.surfaceVariant}
-                  ios_backgroundColor={RitmosColors.outline}
-                />
-              </View>
-
-              {/* Botón Enlace */}
-              <TouchableOpacity style={styles.linkButton} onPress={handleEnlace}>
-                <IconSymbol size={20} name="link" color={RitmosColors.text.onSurface} />
-                <Text style={styles.linkButtonText}>Enlace</Text>
+      {/* Modal de Compartir */}
+      <Modal visible={showShareModal} transparent animationType="fade" onRequestClose={handleCloseModal}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Header del Modal */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>{alarmaData.titulo}</Text>
+              <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
+                <IconSymbol size={24} name="xmark" color={RitmosColors.text.onSurface} />
               </TouchableOpacity>
             </View>
+
+            {/* Código QR */}
+            <View style={styles.qrContainer}>
+              <View style={styles.qrCode}>
+                <View style={styles.qrPattern}>
+                  {Array.from({ length: 15 }, (_, row) =>
+                    Array.from({ length: 15 }, (_, col) => (
+                      <View
+                        key={`${row}-${col}`}
+                        style={[
+                          styles.qrPixel,
+                          {
+                            backgroundColor: (row + col) % 3 === 0 ? '#000' : '#fff',
+                          },
+                        ]}
+                      />
+                    )),
+                  )}
+                </View>
+              </View>
+            </View>
+
+            {/* Toggle Compartir Notas */}
+            <View style={styles.shareToggleContainer}>
+              <Text style={styles.shareToggleLabel}>Compartir las Notas</Text>
+              <Switch
+                value={shareNotes}
+                onValueChange={setShareNotes}
+                trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
+                thumbColor={shareNotes ? RitmosColors.surface : RitmosColors.surfaceVariant}
+                ios_backgroundColor={RitmosColors.outline}
+              />
+            </View>
+
+            {/* Botón Enlace */}
+            <TouchableOpacity style={styles.linkButton} onPress={handleEnlace}>
+              <IconSymbol size={20} name="link" color={RitmosColors.text.onSurface} />
+              <Text style={styles.linkButtonText}>Enlace</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      </ThemedView>
-    </SafeAreaView>
+        </View>
+      </Modal>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: RitmosColors.background,
-  },
-  header: {
-    ...RitmosComponents.screenHeader,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    ...RitmosComponents.screenHeaderText,
-  },
   content: {
     flex: 1,
     paddingHorizontal: RitmosSpacing.lg,
@@ -255,6 +248,21 @@ const styles = StyleSheet.create({
   alarmTitle: {
     ...RitmosComponents.headingLarge,
     flex: 1,
+  },
+  mapContainer: {
+    height: 300,
+    marginTop: RitmosSpacing.lg,
+    marginBottom: RitmosSpacing.lg,
+    padding: 0,
+    borderRadius: RitmosSpacing.md,
+    marginLeft: RitmosSpacing.lg,
+    marginRight: RitmosSpacing.lg,
+    backgroundColor: RitmosColors.surface,
+    ...RitmosElevation.level1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   toggleSwitch: {
     marginLeft: RitmosSpacing.md,
@@ -355,7 +363,6 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: '500',
   },
-  // Estilos del Modal
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

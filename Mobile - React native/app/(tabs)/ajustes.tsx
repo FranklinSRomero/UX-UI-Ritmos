@@ -1,10 +1,10 @@
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/layout/screen';
+import { ScreenHeader } from '@/components/layout/screen-header';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { RitmosColors, RitmosComponents, RitmosElevation, RitmosSpacing, RitmosTypography } from '@/constants/theme';
+import { RitmosBorder, RitmosColors, RitmosComponents, RitmosElevation, RitmosSpacing, RitmosTypography } from '@/constants/theme';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AjustesScreen() {
   const [invertirHorario, setInvertirHorario] = useState(false);
@@ -71,106 +71,81 @@ export default function AjustesScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <IconSymbol size={24} name="chevron.left" color={RitmosColors.surface} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Ajustes</Text>
-          <View style={styles.backButton} />
+    <Screen>
+      <ScreenHeader title="Ajustes" onBackPress={handleBackPress} />
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Sección de Perfil */}
+        <View style={styles.section}>
+          <View style={styles.profileField}>
+            <Text style={styles.fieldLabel}>Nombre</Text>
+            <Text style={styles.fieldValue}>{userData.nombre}</Text>
+          </View>
+
+          <View style={styles.profileField}>
+            <Text style={styles.fieldLabel}>Correo</Text>
+            <Text style={[styles.fieldValue, { textDecorationLine: 'underline' }]}>{userData.correo}</Text>
+          </View>
         </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          {/* Sección de Perfil */}
-          <View style={styles.section}>
-            <View style={styles.profileField}>
-              <Text style={styles.fieldLabel}>Nombre</Text>
-              <Text style={styles.fieldValue}>{userData.nombre}</Text>
+        {/* Sección de Contraseña */}
+        <View style={styles.section}>
+          <View style={styles.passwordField}>
+            <View>
+              <Text style={styles.fieldLabel}>Contraseña</Text>
+              <Text style={styles.fieldValue}>••••••••</Text>
             </View>
-
-            <View style={styles.profileField}>
-              <Text style={styles.fieldLabel}>Correo</Text>
-              <Text style={styles.fieldValue}>{userData.correo}</Text>
-            </View>
-          </View>
-
-          {/* Sección de Contraseña */}
-          <View style={styles.section}>
-            <View style={styles.passwordField}>
-              <View>
-                <Text style={styles.fieldLabel}>Contraseña</Text>
-                <Text style={styles.fieldValue}>••••••••</Text>
-              </View>
-              <TouchableOpacity style={styles.editButton} onPress={handleEditPassword}>
-                <IconSymbol size={16} name="pencil" color={RitmosColors.primary} />
-                <Text style={styles.editButtonText}>Editar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Sección de Horarios */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Horas activas</Text>
-
-            <View style={styles.hoursContainer}>
-              <View style={styles.hourPill}>
-                <Text style={styles.hourText}>{userData.horaInicio}</Text>
-              </View>
-              <Text style={styles.hourConnector}>a</Text>
-              <View style={styles.hourPill}>
-                <Text style={styles.hourText}>{userData.horaFin}</Text>
-              </View>
-            </View>
-
-            <View style={styles.toggleContainer}>
-              <Text style={styles.toggleLabel}>Invertir horario</Text>
-              <Switch
-                value={invertirHorario}
-                onValueChange={setInvertirHorario}
-                trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
-                thumbColor={invertirHorario ? RitmosColors.surface : RitmosColors.surfaceVariant}
-                ios_backgroundColor={RitmosColors.outline}
-              />
-            </View>
-          </View>
-
-          {/* Sección de Acciones de Cuenta */}
-          <View style={styles.actionsSection}>
-            <TouchableOpacity style={styles.actionButton} onPress={handleCerrarSesion}>
-              <IconSymbol size={20} name="rectangle.portrait.and.arrow.right" color={RitmosColors.text.onSurface} />
-              <Text style={styles.actionButtonText}>Cerrar sesión</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={[styles.actionButton, styles.dangerButton]} onPress={handleEliminarCuenta}>
-              <IconSymbol size={20} name="person.fill.xmark" color={RitmosColors.error} />
-              <Text style={[styles.actionButtonText, styles.dangerText]}>Eliminar cuenta</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleEditPassword}>
+              <IconSymbol size={16} name="pencil" color={RitmosColors.primary} />
+              <Text style={styles.editButtonText}>Editar</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </ThemedView>
-    </SafeAreaView>
+        </View>
+
+        {/* Sección de Horarios */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Horas activas</Text>
+
+          <View style={styles.hoursContainer}>
+            <View style={styles.hourPill}>
+              <Text style={styles.hourText}>{userData.horaInicio}</Text>
+            </View>
+            <Text style={styles.hourConnector}>a</Text>
+            <View style={styles.hourPill}>
+              <Text style={styles.hourText}>{userData.horaFin}</Text>
+            </View>
+          </View>
+
+          <View style={styles.toggleContainer}>
+            <Text style={styles.toggleLabel}>Invertir horario</Text>
+            <Switch
+              value={invertirHorario}
+              onValueChange={setInvertirHorario}
+              trackColor={{ false: RitmosColors.outline, true: RitmosColors.primary }}
+              thumbColor={invertirHorario ? RitmosColors.surface : RitmosColors.surfaceVariant}
+              ios_backgroundColor={RitmosColors.outline}
+            />
+          </View>
+        </View>
+
+        {/* Sección de Acciones de Cuenta */}
+        <View style={styles.actionsSection}>
+          <TouchableOpacity style={styles.actionButton} onPress={handleCerrarSesion}>
+            <IconSymbol size={20} name="rectangle.portrait.and.arrow.right" color={RitmosColors.text.onSurface} />
+            <Text style={styles.actionButtonText}>Cerrar sesión</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.actionButton, styles.dangerButton]} onPress={handleEliminarCuenta}>
+            <IconSymbol size={20} name="person.fill.xmark" color={RitmosColors.error} />
+            <Text style={[styles.actionButtonText, styles.dangerText]}>Eliminar cuenta</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: RitmosColors.background,
-  },
-  header: {
-    ...RitmosComponents.screenHeader,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    ...RitmosComponents.screenHeaderText,
-  },
   content: {
     flex: 1,
     paddingHorizontal: RitmosSpacing.lg,
@@ -183,6 +158,7 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     ...RitmosComponents.headingMedium,
+    fontWeight: '900',
     marginBottom: RitmosSpacing.xs - 1,
   },
   fieldValue: {
@@ -225,7 +201,7 @@ const styles = StyleSheet.create({
     backgroundColor: RitmosColors.surfaceVariant,
     paddingHorizontal: RitmosSpacing.md,
     paddingVertical: RitmosSpacing.xs + 4,
-    borderRadius: RitmosSpacing.lg,
+    borderRadius: RitmosBorder.radius.lg,
     ...RitmosElevation.level1,
   },
   hourText: {
@@ -243,11 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: RitmosColors.surface,
-    paddingHorizontal: RitmosSpacing.lg,
-    paddingVertical: RitmosSpacing.md,
-    borderRadius: RitmosSpacing.lg,
-    ...RitmosElevation.level1,
+
   },
   toggleLabel: {
     ...RitmosComponents.bodyText,
@@ -264,7 +236,7 @@ const styles = StyleSheet.create({
     backgroundColor: RitmosColors.surface,
     paddingHorizontal: RitmosSpacing.lg,
     paddingVertical: RitmosSpacing.md,
-    borderRadius: RitmosSpacing.lg + RitmosSpacing.sm,
+    borderRadius: RitmosBorder.radius.sm,
     gap: RitmosSpacing.md,
     ...RitmosElevation.level2,
   },

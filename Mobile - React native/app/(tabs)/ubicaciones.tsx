@@ -1,11 +1,10 @@
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import { Screen } from '@/components/layout/screen';
+import { ScreenHeader } from '@/components/layout/screen-header';
 import { WebMap } from '@/components/ui/web-map';
 import { RitmosColors, RitmosComponents, RitmosElevation, RitmosSpacing } from '@/constants/theme';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface LocationMarker {
   id: string;
@@ -24,8 +23,6 @@ interface LocationCard {
 }
 
 export default function UbicacionesScreen() {
-  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
-
   // Coordenadas de ejemplo en Bogotá, Colombia
   const markers: LocationMarker[] = [
     {
@@ -61,41 +58,20 @@ export default function UbicacionesScreen() {
     { id: '4', title: '', color: 'blue', type: 'add' },
   ];
 
-  const handleMarkerPress = (markerId: string) => {
-    setSelectedMarker(selectedMarker === markerId ? null : markerId);
-    // Opcional: mostrar información del marcador
-    const marker = markers.find(m => m.id === markerId);
-    if (marker) {
-      console.log('Marcador seleccionado:', marker.title);
-    }
-  };
-
   const handleLocationPress = (location: LocationCard) => {
     if (location.type === 'add') {
       console.log('Agregar nueva alarma desde mapa');
       router.push('/crear-alarma');
     } else {
-      console.log('Ver detalles de ubicación:', location.title);
-      // Resaltar el marcador correspondiente
-      setSelectedMarker(location.id);
+      router.push('/detalle-alarma');
     }
   };
 
   const handleBackPress = () => {
-    // En el contexto de tabs, esto podría navegar a otra pestaña o cerrar el mapa
     console.log('Navegación hacia atrás');
-    // Por ahora, simplemente limpiar la selección
-    setSelectedMarker(null);
   };
 
-  const getMarkerColor = (color: 'red' | 'green' | 'blue') => {
-    const colors = {
-      red: 'red',
-      green: 'green',
-      blue: 'blue',
-    };
-    return colors[color];
-  }; const getCardIconColor = (color: 'red' | 'green' | 'blue') => {
+  const getCardIconColor = (color: 'red' | 'green' | 'blue') => {
     const colors = {
       red: RitmosColors.error,
       green: RitmosColors.success,
@@ -105,95 +81,80 @@ export default function UbicacionesScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <IconSymbol size={24} name="chevron.left" color={RitmosColors.surface} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Mapa de alarmas</Text>
-          <View style={styles.backButton} />
+    <Screen>
+      <ScreenHeader title="Mapa de alarmas" onBackPress={handleBackPress} />
+
+      <ScrollView style={styles.content}>
+        {/* Mapa Real con Leaflet - Funciona en Expo Go */}
+        <View style={styles.mapContainer}>
+          <WebMap
+            latitude={4.6097}
+            longitude={-74.0817}
+            zoom={12}
+            borderRadius={RitmosSpacing.md}
+            markers={markers.map(marker => ({
+              lat: marker.latitude,
+              lng: marker.longitude,
+              title: marker.title,
+              color: getCardIconColor(marker.color)
+            }))}
+          />
         </View>
 
-        <ScrollView style={styles.content}>
-          {/* Mapa Real con Leaflet - Funciona en Expo Go */}
-          <View style={styles.mapContainer}>
-            <WebMap
-              latitude={4.6097}
-              longitude={-74.0817}
-              zoom={12}
-              markers={markers.map(marker => ({
-                lat: marker.latitude,
-                lng: marker.longitude,
-                title: marker.title,
-                color: marker.color
-              }))}
-            />
-          </View>
-
-          {/* Lista de ubicaciones */}
-          <View style={styles.locationsContainer}>
-            {locationCards.map((location) => {
-              if (location.type === 'add') {
-                return (
-                  <TouchableOpacity
-                    key={location.id}
-                    style={styles.addLocationCard}
-                    onPress={() => handleLocationPress(location)}
-                  >
-                    <Text style={styles.addLocationText}>+</Text>
-                  </TouchableOpacity>
-                );
-              }
-
+        {/* Lista de ubicaciones */}
+        <View style={styles.locationsContainer}>
+          {locationCards.map((location) => {
+            if (location.type === 'add') {
               return (
                 <TouchableOpacity
                   key={location.id}
-                  style={styles.locationCard}
+                  style={styles.addLocationCard}
                   onPress={() => handleLocationPress(location)}
                 >
-                  <View
-                    style={[
-                      styles.locationIcon,
-                      { backgroundColor: getCardIconColor(location.color) }
-                    ]}
-                  />
-                  <Text style={styles.locationText}>{location.title}</Text>
+                  <Text style={styles.addLocationText}>+</Text>
                 </TouchableOpacity>
               );
-            })}
-          </View>
-        </ScrollView>
-      </ThemedView>
-    </SafeAreaView>
+            }
+
+            return (
+              <TouchableOpacity
+                key={location.id}
+                style={styles.locationCard}
+                onPress={() => handleLocationPress(location)}
+              >
+                <View
+                  style={[
+                    styles.locationIcon,
+                    { backgroundColor: getCardIconColor(location.color) }
+                  ]}
+                />
+                <Text style={styles.locationText}>{location.title}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: RitmosColors.background,
-  },
-  header: {
-    ...RitmosComponents.screenHeader,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    ...RitmosComponents.screenHeaderText,
-  },
   content: {
     flex: 1,
   },
   mapContainer: {
     height: 300,
-    margin: 0,
+    marginTop: RitmosSpacing.lg,
+    padding: 0,
+    borderRadius: RitmosSpacing.md,
+    marginLeft: RitmosSpacing.lg,
+    marginRight: RitmosSpacing.lg,
+    backgroundColor: RitmosColors.surface,
     ...RitmosElevation.level1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   map: {
     width: '100%',

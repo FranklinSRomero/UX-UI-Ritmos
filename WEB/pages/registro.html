@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ritmos — Crear cuenta</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+
+  <main class="hero right">
+    <aside class="panel panel-right">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="../assets/img/ImagoTipo.png" alt="Ritmos" class="logo-img">
+      </div>
+
+      <!-- Formulario de registro -->
+      <form class="form" aria-label="Formulario de registro" onsubmit="event.preventDefault()">
+        <div class="field">
+          <label for="name" class="sr-only">Nombre</label>
+          <div class="input">
+            <span class="icon" aria-hidden="true">👤</span>
+            <input id="name" type="text" placeholder="Nombre" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email" class="sr-only">Correo</label>
+          <div class="input">
+            <span class="icon" aria-hidden="true">📧</span>
+            <input id="email" type="email" placeholder="Correo" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password" class="sr-only">Contraseña</label>
+          <div class="input">
+            <span class="icon" aria-hidden="true">🔒</span>
+            <input id="password" type="password" placeholder="Contraseña" autocomplete="new-password" required />
+          </div>
+        </div>
+
+        <button class="btn" type="submit">
+          Registrarse
+          <span aria-hidden="true">➔</span>
+        </button>
+
+        <p class="muted">¿Ya tienes cuenta?
+          <a class="link" href="../index.html">Inicia sesión</a>
+        </p>
+      </form>
+    </aside>
+  </main>
+</body>
+</html>

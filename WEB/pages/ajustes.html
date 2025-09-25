@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ritmos — Ajustes</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="app">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-panel">
+        <a href="../index.html" class="brand" title="Inicio">
+          <img src="../assets/img/ImagoTipo.png" alt="Ritmos" class="brand-mark">
+        </a>
+        <nav class="tabs">
+          <a class="tab" href="./dashboard.html">
+            <!-- Bell -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9a6 6 0 10-12 0v.75a8.967 8.967 0 01-2.311 6.022c1.78.66 3.6 1.085 5.454 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            Alarmas
+          </a>
+          <a class="tab active" href="./ajustes.html">
+            <!-- Cog -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.282c.06.36.31.654.64.79a7.5 7.5 0 012.289 1.323c.27.23.65.282.97.13l1.197-.558a1.125 1.125 0 011.5.651l.986 2.56c.2.52-.02 1.11-.5 1.39l-1.1.636a1.125 1.125 0 00-.53.95v.265c0 .335.19.642.49.8l1.1.636c.48.28.7.87.5 1.39l-.985 2.56a1.125 1.125 0 01-1.5.651l-1.198-.558a1.125 1.125 0 00-.97.13 7.5 7.5 0 01-2.289 1.323 1.125 1.125 0 00-.64.79l-.213 1.282z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            Ajustes
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <h1 class="page-title">Ajustes</h1>
+  </header>
+
+  <!-- Contenido -->
+  <main class="page">
+    <section class="card" style="max-width: 980px;">
+      <!-- Nombre -->
+      <div class="label">Nombre</div>
+      <input type="text" class="control" value="Nicolas Suarez" />
+
+      <!-- Correo -->
+      <div class="label">Correo</div>
+      <input type="email" class="control" value="pepito.perez@ejemplo.com" />
+
+      <!-- Contraseña + botón editar -->
+      <div class="label">Contraseña</div>
+      <div style="display:flex; gap:10px; align-items:center; max-width: 520px;">
+        <input type="password" class="control" value="**********" style="flex:1;" />
+        <button class="chip" type="button" title="Editar contraseña">
+          <!-- Pencil Square -->
+          <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M16.862 3.487a2.1 2.1 0 012.97 2.97L8.28 18.01a4.2 4.2 0 01-1.574 1.024l-3.02 1.073 1.073-3.02A4.2 4.2 0 015.783 15.49L16.862 3.487z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 7.5l-3-3" />
+          </svg>
+          Editar
+        </button>
+      </div>
+
+      <!-- Footer acciones -->
+      <div class="settings-footer">
+        <button class="chip" type="button" onclick="location.href='../index.html'">
+          <!-- Arrow Left On Rectangle (logout) -->
+          <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+          </svg>
+          Cerrar sesión
+        </button>
+
+        <button class="chip danger" type="button">
+          <!-- User Minus -->
+          <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0M15 11.25h6" />
+          </svg>
+          Eliminar cuenta
+        </button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

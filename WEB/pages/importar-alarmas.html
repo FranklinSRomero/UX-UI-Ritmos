@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Importar alarmas</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="app">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-panel">
+        <a href="../index.html" class="brand" title="Inicio">
+          <img src="../assets/img/ImagoTipo.png" alt="Ritmos" class="brand-mark">
+        </a>
+        <nav class="tabs">
+          <a class="tab" href="./dashboard.html">
+            <!-- Bell -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9a6 6 0 10-12 0v.75a8.967 8.967 0 01-2.311 6.022c1.78.66 3.6 1.085 5.454 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            Alarmas
+          </a>
+          <a class="tab" href="./ajustes.html">
+            <!-- Cog -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.282c.06.36.31.654.64.79a7.5 7.5 0 012.289 1.323c.27.23.65.282.97.13l1.197-.558a1.125 1.125 0 011.5.651l.986 2.56c.2.52-.02 1.11-.5 1.39l-1.1.636a1.125 1.125 0 00-.53.95v.265c0 .335.19.642.49.8l1.1.636c.48.28.7.87.5 1.39l-.985 2.56a1.125 1.125 0 01-1.5.651l-1.198-.558a1.125 1.125 0 00-.97.13 7.5 7.5 0 01-2.289 1.323 1.125 1.125 0 00-.64.79l-.213 1.282z" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Ajustes
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <h1 class="page-title">Importar alarmas</h1>
+  </header>
+
+  <!-- Contenido -->
+  <main class="page">
+    <section class="card">
+      <!-- Acciones -->
+      <div class="action-buttons" style="justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="chip" type="button" id="btn-export">
+            <!-- Archive Box (ZIP) -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8.25h18M7.5 8.25V6.75A1.5 1.5 0 019 5.25h6a1.5 1.5 0 011.5 1.5v1.5M4.5 8.25v9A2.25 2.25 0 006.75 19.5h10.5A2.25 2.25 0 0019.5 17.25v-9" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.75 12h4.5m-4.5 3h4.5" />
+            </svg>
+            Exportar ZIP
+          </button>
+
+          <button class="chip" type="button" onclick="location.href='./dashboard.html'">
+            <!-- X-Mark -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Cancelar
+          </button>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="chip" type="button" id="btn-all">
+            <!-- Squares Plus -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 3.75H5.25A1.5 1.5 0 003.75 5.25V9A1.5 1.5 0 005.25 10.5H9A1.5 1.5 0 0010.5 9V5.25A1.5 1.5 0 009 3.75zM18.75 3.75H15A1.5 1.5 0 0013.5 5.25V9A1.5 1.5 0 0015 10.5h3.75A1.5 1.5 0 0020.25 9V5.25A1.5 1.5 0 0018.75 3.75zM9 13.5H5.25A1.5 1.5 0 003.75 15v3.75A1.5 1.5 0 005.25 20.25H9A1.5 1.5 0 0010.5 18.75V15A1.5 1.5 0 009 13.5zM15.75 15h4.5M18 12.75v4.5" />
+            </svg>
+            Seleccionar todo
+          </button>
+
+          <button class="chip" type="button" id="btn-none">
+            <!-- Squares X -->
+            <svg class="hi" fill="none" viewBox="0 0 24 24" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 3.75H5.25A1.5 1.5 0 003.75 5.25V9A1.5 1.5 0 005.25 10.5H9A1.5 1.5 0 0010.5 9V5.25A1.5 1.5 0 009 3.75zM18.75 3.75H15A1.5 1.5 0 0013.5 5.25V9A1.5 1.5 0 0015 10.5h3.75A1.5 1.5 0 0020.25 9V5.25A1.5 1.5 0 0018.75 3.75zM9 13.5H5.25A1.5 1.5 0 003.75 15v3.75A1.5 1.5 0 005.25 20.25H9A1.5 1.5 0 0010.5 18.75V15A1.5 1.5 0 009 13.5zM15.75 15l3 3m0-3l-3 3" />
+            </svg>
+            Seleccionar ninguno
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista de alarmas -->
+      <ul class="alarm-list" id="list">
+        <li class="alarm-item">
+          <div class="left">
+            <input type="checkbox" class="chk">
+            <span class="code">#1</span>
+            <span class="name">Centro comercial</span>
+          </div>
+        </li>
+        <li class="alarm-item">
+          <div class="left">
+            <input type="checkbox" class="chk">
+            <span class="code">#2</span>
+            <span class="name">Ferretería</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const checks = () => Array.from(document.querySelectorAll('.chk'));
+    document.getElementById('btn-all').onclick  = () => checks().forEach(c => c.checked = true);
+    document.getElementById('btn-none').onclick = () => checks().forEach(c => c.checked = false);
+
+    // Mock export ZIP
+    document.getElementById('btn-export').onclick = () => {
+      const sel = checks().filter(c => c.checked).length;
+      alert(sel ? `Exportando ${sel} alarma(s) a ZIP...` : 'Selecciona al menos una alarma.');
+    };
+  </script>
+</body>
+</html>
+

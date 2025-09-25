@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ritmos — Iniciar sesión</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <main class="hero">
+    <aside class="panel">
+  <!-- Logo como imagen -->
+      <div class="logo">
+        <img src="assets/img/ImagoTipo.png" alt="Ritmos" class="logo-img">
+      </div>
+
+      <!-- Tarjeta redondeada para el login -->
+      <div class="card">
+        <form class="form" aria-label="Formulario de acceso" onsubmit="event.preventDefault()">
+          <div class="field">
+            <label for="email" class="sr-only">Correo</label>
+            <div class="input">
+              <span class="icon" aria-hidden="true">👤</span>
+              <input id="email" type="email" placeholder="Correo" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password" class="sr-only">Contraseña</label>
+            <div class="input">
+              <span class="icon" aria-hidden="true">🔒</span>
+              <input id="password" type="password" placeholder="Contraseña" autocomplete="current-password" required />
+            </div>
+          </div>
+
+          <button class="btn" type="button" onclick="location.href='pages/dashboard.html'">
+            Iniciar sesión <span aria-hidden="true">➔</span>
+          </button>
+
+
+          <p class="muted">¿Aún no tienes cuenta? <a class="link" href="pages/registro.html">Regístrate</a></p>
+
+    </aside>
+
+  </main>
+</body>
+</html>
